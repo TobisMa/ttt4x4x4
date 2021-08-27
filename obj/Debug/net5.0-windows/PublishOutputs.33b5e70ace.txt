@@ -1,0 +1,5 @@
+D:\Inf-Projekte\CSharp\ttt4x4x4\bin\Debug\net5.0-windows\publish\ttt4x4x4.exe
+D:\Inf-Projekte\CSharp\ttt4x4x4\bin\Debug\net5.0-windows\publish\ttt4x4x4.dll
+D:\Inf-Projekte\CSharp\ttt4x4x4\bin\Debug\net5.0-windows\publish\ttt4x4x4.deps.json
+D:\Inf-Projekte\CSharp\ttt4x4x4\bin\Debug\net5.0-windows\publish\ttt4x4x4.runtimeconfig.json
+D:\Inf-Projekte\CSharp\ttt4x4x4\bin\Debug\net5.0-windows\publish\ttt4x4x4.pdb

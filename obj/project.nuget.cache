@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "Yy2q/RGw14wVSErB13rFkVZYn2Zx4q61lzIkg0JLMQ2gqkSaz57kl5/ajfzGkLdJQ/Uwo58zjN+EkIJ6jGYStw==",
+  "success": true,
+  "projectFilePath": "D:\\Inf-Projekte\\CSharp\\ttt4x4x4\\ttt4x4x4.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\tobia\\.nuget\\packages\\microsoft.netcore.app.ref\\5.0.0\\microsoft.netcore.app.ref.5.0.0.nupkg.sha512",
+    "C:\\Users\\tobia\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\5.0.0\\microsoft.windowsdesktop.app.ref.5.0.0.nupkg.sha512",
+    "C:\\Users\\tobia\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\5.0.0\\microsoft.aspnetcore.app.ref.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
