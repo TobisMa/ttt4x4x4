@@ -54,17 +54,29 @@ namespace ttt4x4x4
             return flattends;
         }
 
-        public static List<Point> RemoveDouble(List<Point> a, List<Point> b) {
+        public static List<Point> RemoveDouble(List<Point> a) {
             List<Point> result = new List<Point>();
 
             foreach (Point p in a) {
-                if (IsPointInList(b, p) == -1) {
+                if (IsPointInList(result, p) == -1) {
                     result.Add(p);
                 }
             }
-            foreach (Point p in b) {
-                if (IsPointInList(a, p) == -1) {
-                    result.Add(p);
+            return result;
+        }
+
+        public static List<Point> RemoveSingle(List<Point> a) {
+            List<Point> result = new List<Point>();
+
+            for (int i = 0; i < a.Count; i++) {
+                Point item = a[i];
+                if (IsPointInList(result, item) == -1) {
+                    for (int j = i; j < a.Count; i++) {
+                        if (item == a[j]) {
+                            result.Add(item.Copy());
+                            break;
+                        }
+                    }
                 }
             }
 

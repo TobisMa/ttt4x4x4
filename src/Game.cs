@@ -106,8 +106,20 @@ namespace ttt4x4x4 {
         /// </summary>
         /// <returns>Winner value</returns>
         private int CheckWinner(bool force = false) {
+            bool tie = true;
+
             if (Winner != NoWinner && !force) {
                 return Winner;
+            }
+
+            foreach (int f in GameCube) {
+                if (f == EmptyField) {
+                    tie = false;
+                    break;
+                }
+            }
+            if (tie) {
+                return Tie;
             }
 
             for (int i = 0; i < 4; i++) {
@@ -244,7 +256,6 @@ namespace ttt4x4x4 {
                 return;
             }
             Point p = CalculateMove();
-            Thread.Sleep(300);
             Set(p);
         }
     }

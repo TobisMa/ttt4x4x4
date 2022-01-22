@@ -30,6 +30,7 @@ namespace ttt4x4x4
             InitializeComponent();
 
             Game = new TTTGame();
+            AutoScaleMode = AutoScaleMode.Dpi;
 
             #region IniitalizeWindowElements
 
@@ -205,7 +206,7 @@ namespace ttt4x4x4
             {
                 Game.MakeMove();
                 Invalidate();
-                System.Threading.Thread.Sleep(1000);
+                System.Threading.Thread.Sleep(300);
             }
         }
 

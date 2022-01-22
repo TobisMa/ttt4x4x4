@@ -8,7 +8,6 @@ namespace ttt4x4x4
 
     partial class TTTGame
     {
-
         private List<Point> OptimalPoints = new List<Point>() {
             new Point(0, 0, 0),
             new Point(3, 0, 0),
@@ -158,11 +157,39 @@ namespace ttt4x4x4
 
         private Point CalculateMove()
         {
+            int player = GetPlayerTurn();
+            int otherPlayer = (GetPlayerTurn() == PlayerBlue) ? PlayerRed : PlayerBlue;
+            int i = 0;
             Point p = new Point(0, 0, 0);
             p = CheckPossibleWin();
             if (!p.Empty)
             {
                 return p;
+            }
+
+            List<Point> currPlayerPinches = new List<Point>();
+            for (i = 0; i < 4; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    for (int k = 0; k < 4; k++)
+                    {
+                        if (Get(k, j, i) == EmptyField)
+                        {
+                            Dictionary<int, bool> pinch = CheckForPinch(new Point(k, j, i));
+
+                            if (pinch[otherPlayer]) {
+                                return new Point(k, j, i);
+                            }
+                            else if (pinch[player]) {
+                                currPlayerPinches.Add(new Point(i, j, k));
+                            }
+                        }
+                    }
+                }
+            }
+            if (currPlayerPinches.Count != 0) {
+                return GetRandomPoint(currPlayerPinches);
             }
 
             Dictionary<int, int> required = new Dictionary<int, int>();
@@ -172,7 +199,7 @@ namespace ttt4x4x4
             List<List<Point>> possibleRowsBlue = new List<List<Point>>();
             List<List<Point>> possibleRowsRed = new List<List<Point>>();
 
-            int i = 0;
+            i = 0;
             while (i < rows.Count) {
                 Dictionary<int, int> rowCount = new Dictionary<int, int>();
                 i = 0;
@@ -199,13 +226,13 @@ namespace ttt4x4x4
 
                         break;
                     }
-                    if (rowCount[PlayerBlue] < required[PlayerBlue] && rowCount[PlayerRed] == required[PlayerRed])
+                    if (rowCount[PlayerBlue] <= required[PlayerBlue] && rowCount[PlayerRed] == required[PlayerRed])
                     {
                         if (CanWinWithRow(row)) {
                             possibleRowsBlue.Add(row);
                         }
                     }
-                    if (rowCount[PlayerBlue] == required[PlayerBlue] && rowCount[PlayerRed] < required[PlayerRed])
+                    if (rowCount[PlayerBlue] == required[PlayerBlue] && rowCount[PlayerRed] <= required[PlayerRed])
                     {
                         if (CanWinWithRow(row)) {
                             possibleRowsRed.Add(row);
@@ -225,8 +252,8 @@ namespace ttt4x4x4
             List<Point> psB = LookForBestPoint(possiblePointsBlue);
             List<Point> psR = LookForBestPoint(possiblePointsRed);
 
-            List<Point> preferredPoints = (GetPlayerTurn() == PlayerBlue) ? psR : psB;
             List<Point> otherPoints = (GetPlayerTurn() == PlayerBlue) ? psB : psR;
+            List<Point> preferredPoints = (GetPlayerTurn() == PlayerBlue) ? psR : psB;
 
             if (preferredPoints.Count != 0) {
                 return GetRandomPoint(preferredPoints);
@@ -236,19 +263,27 @@ namespace ttt4x4x4
             }
             else
             {
-                List<Point> res = Program.RemoveDouble(
-                    Program.flatten(possibleRowsBlue),
-                    Program.flatten(possibleRowsRed)
-                );
+                possiblePointsBlue = Program.flatten(possibleRowsBlue);
+                possiblePointsRed = Program.flatten(possibleRowsRed);
+
+                List<Point> res = new List<Point>();
+                res.AddRange(possiblePointsBlue);
+                res.AddRange(possiblePointsRed);
+
                 res = RemoveFilledPoints(res);
-                if (res.Count != 0) {
+                List<Point> doubled = Program.RemoveSingle(res);
+                
+                if (doubled.Count != 0) {
                     return GetRandomPoint(res);
+                } else if (res.Count != 0) {
+                    return GetRandomPoint(Program.RemoveDouble(res));
                 }
             }
 
             // TODO  remove Used Points from list
             // TODO  look for another point
             // TODO  if no found use random point
+            Console.WriteLine("Didn't find a possible move. Looking for a pinch");
 
             List<Point> otherOptions = new List<Point>();
 
@@ -265,6 +300,7 @@ namespace ttt4x4x4
                     }
                 }
             }
+            Console.WriteLine("Using random point...");
             return GetRandomPoint(RemoveFilledPoints(otherOptions));
         }
 
@@ -388,6 +424,40 @@ namespace ttt4x4x4
                 }
             }
             return true;
+        }
+
+        private Dictionary<int, bool> CheckForPinch(Point p) {
+            int found_rows_opponent = 0;
+            int found_rows = 0;
+            Dictionary<int, bool> res = new Dictionary<int, bool>();
+            int player = GetPlayerTurn();
+            int otherPlayer = (GetPlayerTurn() == PlayerBlue) ? PlayerRed : PlayerBlue;
+
+            res[player] = false;
+            res[otherPlayer] = false;
+
+            foreach (List<Point> row in rows) {
+                if (Program.IsPointInList(row, p) != -1) {                    
+                    Dictionary<int, int> rowCount = Count(row);
+                    if (rowCount[otherPlayer] == 2) {
+                        found_rows_opponent++;
+
+                        if (found_rows_opponent >= 2) {
+                            res[otherPlayer] = true;
+                            return res;  // to speed program up
+                        }
+                    }
+                    if (rowCount[player] == 2) {
+                        found_rows++;
+
+                        if (found_rows >= 2) {
+                            res[player] = true;
+                            // no return (maybe the opponent still has one)
+                        }
+                    }
+                }
+            }
+            return res;
         }
     }
 }
