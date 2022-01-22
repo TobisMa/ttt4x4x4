@@ -1,5 +1,0 @@
-D:\Inf-Projekte\CSharp\v1_player2_4x4x4ttt\ttt4x4x4.exe
-D:\Inf-Projekte\CSharp\v1_player2_4x4x4ttt\ttt4x4x4.dll
-D:\Inf-Projekte\CSharp\v1_player2_4x4x4ttt\ttt4x4x4.deps.json
-D:\Inf-Projekte\CSharp\v1_player2_4x4x4ttt\ttt4x4x4.runtimeconfig.json
-D:\Inf-Projekte\CSharp\v1_player2_4x4x4ttt\ttt4x4x4.pdb
